@@ -14,7 +14,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 public class SAXTest01 {
-	List<Person> list = new ArrayList();
+	List<Person> list;
 	StringBuilder sb;
 	Person p;
 	
