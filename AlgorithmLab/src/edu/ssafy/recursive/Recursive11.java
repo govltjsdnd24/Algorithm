@@ -13,15 +13,12 @@ public class Recursive11 {
 	public static void main(String[] args) {
 		
 		recursive(0); //* What should we set as parameters
-		System.out.println(cnt);
 	}
 	
-	static int cnt=0;
 	private static void recursive(int idx) {
 		//basis part
 
 		if(idx==sel.length) {
-			cnt++;
 			System.out.println(Arrays.toString(sel));
 			return;
 		}

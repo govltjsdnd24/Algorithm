@@ -2,9 +2,10 @@ package august_1;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.Arrays;
 import java.util.Scanner;
 
-public class SWEA_5215 {
+public class SWEA_5215_PowerSet {
 	static int [][]calScore;
 	static int [][]scores;
 	static int N,L,Ans;
@@ -30,31 +31,41 @@ public class SWEA_5215 {
 					calScore[i][j]=scan.nextInt();
 				}
 			
+			boolean [] sel= new boolean [N];
+			recursion(0,sel);
 			
-			recursion(0,0,0);
 			System.out.println("#"+test_case+" "+Ans);
-			
-			
 		}
 
 	}
 	
-	public static void recursion(int index, int sSum,int cSum) {
+	public static void recursion(int index, boolean[] sel) {
 		//basis part
-		if(cSum>L) {
-			return;
-		}
+		
 		if(index==N) {
-			Ans = Math.max(Ans, sSum);
+			int sum=0;
+			int taste=0;
+			
+			for (int i = 0; i < sel.length; i++) {
+				if(sel[i]) {
+					sum+= calScore[i][1];
+					taste+=calScore[i][0];
+				}
+			}
+			if(sum<=L) {
+				Ans= Math.max(Ans, taste);
+			}
 			return;
 		}
 		
 		//inductive part
 		
 		//재료 선택 하는 경우
-		recursion(index+1,sSum+calScore[index][0],sSum+calScore[index][1]);
+		sel[index]=true;
+		recursion(index+1,sel);
 		//재료 선택 않는 경우
-		recursion(index+1,sSum,cSum);
+		sel[index]=false;
+		recursion(index+1,sel);
 	}
 
 }
