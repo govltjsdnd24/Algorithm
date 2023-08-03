@@ -30,9 +30,6 @@ public class Recursive14 {
 		for (int i = idx; i < arr.length; i++) {
 			sel[k]=arr[i];
 			recursive(arr, sel, i+1, k+1);
-		}
-		
-
-		
+		}	
 	}
 }
