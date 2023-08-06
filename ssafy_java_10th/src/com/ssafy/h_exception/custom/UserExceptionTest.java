@@ -1,5 +1,10 @@
 package com.ssafy.h_exception.custom;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
 public class UserExceptionTest {
     private static String[] fruits = { "사과", "오렌지", "토마토" };
 
@@ -17,19 +22,21 @@ public class UserExceptionTest {
         	getFruit2("오렌지");
         	getFruit2("오렌지");
         } catch(FruitNotFoundException e) {
-        	System.out.println(e.getMessage());
+        	e.printStackTrace();
         }
 
         // END
 
         // TODO: 4. 수박, 멜론, 복숭아을 저장해서 예외 상황을 테스트 하시오.
-        try {
+        try(BufferedReader br= new BufferedReader(new InputStreamReader(new FileInputStream("abc.txt")))) {
         	setFruit("수박");
         	setFruit("멜론");
         	setFruit("복숭아");
         } catch(FruitFullException e) {
         	System.out.println(e.getMessage());
-        }
+        } catch (IOException e) {
+			e.printStackTrace();
+		}
     
 
     // END
