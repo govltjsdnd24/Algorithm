@@ -10,8 +10,10 @@ public class ThrowsTest {
         methodCall1();
     	} catch(ClassNotFoundException e) {
     		e.printStackTrace();
-    	} catch(ArithmeticException e) {
-    		e.printStackTrace();
+    		System.out.println(e.getCause());
+    	} 
+    	catch(ArithmeticException e) {
+    		System.out.println(e.getCause());
     	}
         System.out.println("done");
     }
@@ -21,8 +23,10 @@ public class ThrowsTest {
     }
 
      private static void methodCall2() throws ClassNotFoundException{
-        uncheckedExceptionMethod();
-//        checkedExceptionMethod();
+    	 checkedExceptionMethod();
+    	 uncheckedExceptionMethod();
+        
+        
     }
 
     @SuppressWarnings("unused")
@@ -32,7 +36,7 @@ public class ThrowsTest {
 
     @SuppressWarnings("unused")
     private static void uncheckedExceptionMethod() {
-        int i = 1 / 0;
+        	 int i = 1 / 0;
     }
 
 }

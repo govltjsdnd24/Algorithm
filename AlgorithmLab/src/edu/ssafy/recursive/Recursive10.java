@@ -22,7 +22,7 @@ public class Recursive10 {
 		}
 		
 		//inductive part
-		
+
 		for (int i = 0; i < arr.length; i++) {
 			sel[idx]=arr[i];
 			recursive(idx+1);
