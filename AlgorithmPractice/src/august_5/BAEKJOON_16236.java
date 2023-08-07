@@ -61,7 +61,7 @@ public class BAEKJOON_16236 {
 			return;
 		}
 		
-		if(shark.comparePos(fish[shark]))
+		if(shark.comparePos(fish[shark.getSize()]))
 		
 
 		if(fish[shark.getSize()].get(0).getC()>shark.getC())
