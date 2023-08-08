@@ -6,7 +6,7 @@ import java.util.*;
 public class 항공기지건설 {
 	static int N,K,Ans,T;
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws FileNotFoundException {
 		System.setIn(new FileInputStream("항공기지건설.txt"));
 		Scanner sc= new Scanner(System.in);
 		T=sc.nextInt();
