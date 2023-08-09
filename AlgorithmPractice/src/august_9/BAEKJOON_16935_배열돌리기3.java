@@ -14,6 +14,7 @@ public class BAEKJOON_16935_배열돌리기3 {
 		M=scan.nextInt();
 		int R=scan.nextInt();
 		int operation=scan.nextInt();
+		grid=new int[N][M];
 		
 		switch(operation) {
 		case 1:
@@ -25,7 +26,15 @@ public class BAEKJOON_16935_배열돌리기3 {
 			break;
 		}
 		
-		
+		int i,j;
+		for(i=0;i<temp.length;i++) {
+			for(j=0;j<temp[0].length;j++) {
+				System.out.print(temp[i][j]);
+				if(j!=temp[0].length-1)
+					System.out.print(" ");
+			}
+			System.out.println();
+		}
 
 	}
 	
