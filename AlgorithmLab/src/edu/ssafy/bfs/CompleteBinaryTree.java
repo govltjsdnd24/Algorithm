@@ -2,11 +2,12 @@ package edu.ssafy.bfs;
 
 import java.util.ArrayDeque;
 import java.util.Queue;
+import java.util.Stack;
 
 public class CompleteBinaryTree<T> {
 	private Object[]nodes;
-	private int lastIndex=0; //Ã¤¿öÁø ¸¶Áö¸· ³ëµåÀÇ ÀÎµ¦½º
-	private final int SIZE; //ÃÖ´ë ³ëµåÀÇ °³¼ö
+	private int lastIndex=0; //Ã¤ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Îµï¿½ï¿½ï¿½
+	private final int SIZE; //ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	
 	public CompleteBinaryTree(int size) {
 		this.SIZE=size;
@@ -29,18 +30,100 @@ public class CompleteBinaryTree<T> {
 	
 	public void bfs() {
 		if(isEmpty())return;
-		//Å½»ö ¼ø¼­¸¦ °ü¸®ÇÒ ´ë±â¿­ ÀÚ·á±¸Á¶ »ı¼º
 		Queue<Integer> queue = new ArrayDeque<Integer>();
-		//Å½»ö ½ÃÀÛÀÇ ´ë»óºÎÅÍ Å¥¿¡ ³Ö±â
-		queue.offer(1); //·çÆ® ³ëµå ÀÎµ¦½º
-		while(!queue.isEmpty()) { //Å½»ö ³»»óÀÌ ÀÖ´Ù¸é
-			int current = queue.poll();  //Å½»ö ´ë»ó Å¥¿¡¼­ ²¨³»±â
-			//Å½»ö´ë»ó ¹æ¹®Ã³¸®
+		queue.offer(1);
+		while(!queue.isEmpty()) { 
+			int current = queue.poll();  
+			
 			System.out.println(nodes[current]);
-			// ÇöÀç Å½»ö´ë»óÀ» ÅëÇØ Å½»öÇØ¾ßÇÒ »õ·Î¿î ´ë»óÀ» Å¥¿¡ ³Ö±â
+			
 			if(current*2<=lastIndex) queue.offer(current*2);
 			if(current*2+1<=lastIndex) queue.offer(current*2+1);
 			
 		}
 	}
+	
+	public void bfs2() {
+		if(isEmpty())return;
+		//
+		Queue<Integer> queue = new ArrayDeque<Integer>();
+		//
+		queue.offer(1); //
+		
+		int breadth=0;
+		while(!queue.isEmpty()) { //íƒìƒ‰ ëŒ€ìƒì´ ìˆë‹¤ë©´
+			int size=queue.size();
+			while(--size>=0) {
+				int current = queue.poll();  //íƒìƒ‰ ëŒ€ìƒ íì—ì„œ êº¼ë‚´ê¸°
+				//íƒìƒ‰ëŒ€ìƒ ë°©ë¬¸ì²˜ë¦¬
+				System.out.println(nodes[current]);
+				//í˜„ì¬ íƒìƒ‰ëŒ€ìƒì„ í†µí•´ íƒìƒ‰í•´ì•¼í•  ìƒˆë¡œìš´ ëŒ€ìƒì„ íì— ë„£ê¸°
+				if(current*2<=lastIndex) queue.offer(current*2);
+				if(current*2+1<=lastIndex) queue.offer(current*2+1);
+			}
+			System.out.println();
+			System.out.println("========="+breadth+"ë„ˆë¹„ íƒìƒ‰ ì™„ë£Œ");
+			breadth++;
+		}
+	}
+	
+	public void bfs3() {
+		if(isEmpty())return;
+		Queue<int[]> queue = new ArrayDeque<int[]>(); //int []: {íƒìƒ‰ë…¸ë“œì˜ ì¸ë±ìŠ¤,ë„ˆë¹„}
+		queue.offer(new int[] {1,0});
+		
+		while(!queue.isEmpty()) { 
+			int [] info= queue.poll();
+			int current = info[0];
+			
+			System.out.println(nodes[current]+"//"+info[1]);
+			
+			if(current*2<=lastIndex) queue.offer(new int[] {current*2, info[1]+1});
+			if(current*2+1<=lastIndex) queue.offer(new int[] {current*2+1, info[1]+1});
+			
+		}
+	}
+	
+	public void dfsByPreOrder(int current) { //í˜„ì¬ ë…¸ë“œë¥¼ ì „ìœ„ìˆœíšŒë¡œ íƒìƒ‰
+		//íƒìƒ‰ ëŒ€ìƒ ë°©ë¬¸ì²˜ë¦¬
+		System.out.print(nodes[current]);  
+		// í˜„ì¬ íƒìƒ‰ëŒ€ìƒì„ í†µí•´ íƒìƒ‰í•´ì•¼í•  ìƒˆë¡œìš´ ëŒ€ìƒì„ ì¬ê·€ í˜¸ì¶œë¡œ íƒìƒ‰ì‹œí‚¤ê¸°
+		if(current*2<=lastIndex) dfsByPreOrder(current*2);
+		if(current*2+1<=lastIndex) dfsByPreOrder(current*2+1);
+	}
+	
+	public void dfsByInOrder(int current) { //í˜„ì¬ ë…¸ë“œë¥¼ ì „ìœ„ìˆœíšŒë¡œ íƒìƒ‰
+		
+		// í˜„ì¬ íƒìƒ‰ëŒ€ìƒì„ í†µí•´ íƒìƒ‰í•´ì•¼í•  ìƒˆë¡œìš´ ëŒ€ìƒì„ ì¬ê·€ í˜¸ì¶œë¡œ íƒìƒ‰ì‹œí‚¤ê¸°
+		if(current*2<=lastIndex) dfsByInOrder(current*2);
+		//íƒìƒ‰ ëŒ€ìƒ ë°©ë¬¸ì²˜ë¦¬
+		System.out.print(nodes[current]);  
+		if(current*2+1<=lastIndex) dfsByInOrder(current*2+1);
+	}
+	
+	public void dfsByPostOrder(int current) { //í˜„ì¬ ë…¸ë“œë¥¼ ì „ìœ„ìˆœíšŒë¡œ íƒìƒ‰
+			
+			// í˜„ì¬ íƒìƒ‰ëŒ€ìƒì„ í†µí•´ íƒìƒ‰í•´ì•¼í•  ìƒˆë¡œìš´ ëŒ€ìƒì„ ì¬ê·€ í˜¸ì¶œë¡œ íƒìƒ‰ì‹œí‚¤ê¸°
+			if(current*2<=lastIndex) dfsByPostOrder(current*2);
+			if(current*2+1<=lastIndex) dfsByPostOrder(current*2+1);
+			//íƒìƒ‰ ëŒ€ìƒ ë°©ë¬¸ì²˜ë¦¬
+			System.out.print(nodes[current]);  	
+	}
+	
+	public void dfs() {
+		if(isEmpty())return;
+		Stack<Integer> stack = new Stack<Integer>();
+		stack.push(1);
+		while(!stack.isEmpty()) { 
+			int current = stack.pop();  
+			
+			System.out.print(nodes[current]);
+			if(current*2+1<=lastIndex) stack.push(current*2+1);
+			if(current*2<=lastIndex) stack.push(current*2);
+			
+			
+		}
+	}
+
+	
 }

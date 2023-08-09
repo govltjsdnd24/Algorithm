@@ -9,9 +9,18 @@ public class CompleteBinaryTreeTest {
 		for (int i = 0; i < size; i++) {
 			tree.add((char)(65+i));
 			
-		tree.bfs();	
-			
 		}
+//		tree.bfs3();
+		tree.dfs();
+		System.out.println();
+		tree.dfsByPreOrder(1);
+		System.out.println();
+		tree.dfsByInOrder(1);
+		System.out.println();
+		tree.dfsByPostOrder(1);
+		System.out.println();
+			
+		
 	}
 
 }
