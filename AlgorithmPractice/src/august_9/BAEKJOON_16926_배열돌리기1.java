@@ -34,29 +34,6 @@ public class BAEKJOON_16926_배열돌리기1 {
 		
 	}
 	
-//	public static void rotateCounterClockwise(int times) {
-//		Stack<Integer> stack= new Stack<Integer>();
-//		
-//		if(times%2==1)
-//			temp=new int[M][N];
-//		else
-//			temp=new int[M][N];
-//				
-//		for(int i=0;i<times;i++) {
-//			//push in integers
-//			for(int j=0;j<N;j++) {
-//				for(int k=0;k<M;k++) {
-//					stack.push(grid[j][k]);
-//				}
-//				for(int k=0;k<M;k++) {
-//					temp[k][j]=stack.pop();
-//				}
-//			}
-//			
-//			
-//		}
-//		
-//	}
 	
 	public static void rotateCounterClockwise(int times) {	
 		int i,j,k,l;
