@@ -32,8 +32,5 @@ public class Recursive12 {
 			sel[k]=arr[i];
 			recursive(arr, sel, i+1, k+1);
 		}
-		
-
-		
 	}
 }
