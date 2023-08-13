@@ -1,6 +1,8 @@
-package h_august_09;
+ackage h_august_09;
 
 import java.util.*;
+
+import h_august_09.Tomato;
 
 class HTomato extends Tomato{
 	private int h,n,m;

@@ -17,7 +17,7 @@ class Layout{
 }
 
 
-public class BAEKJOON_4963 {
+public class BAEKJOON_4963_섬의개수 {
 	static int[][] map;
 	static boolean[][] visited;
 	static int H,W;

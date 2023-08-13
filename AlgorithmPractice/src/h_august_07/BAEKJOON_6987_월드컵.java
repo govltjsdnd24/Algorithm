@@ -6,7 +6,7 @@ import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicInteger;
 
 
-public class BAEKJOON_6987 {
+public class BAEKJOON_6987_월드컵 {
 	
 	static int [][][] distribution=new int [4][6][3];
 	

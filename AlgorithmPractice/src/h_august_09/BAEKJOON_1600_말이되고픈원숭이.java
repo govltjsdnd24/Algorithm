@@ -7,18 +7,15 @@ import java.util.*;
 
 class Monkey{
 	private int x,y,depth,jumps;
-	public Monkey(int x,int y,int depth,int jumps) {
+	public Monkey(int x,int y,int jumps) {
 		this.x=x;this.y=y;
-		this.depth=depth;this.jumps=jumps;
+		this.jumps=jumps;
 	}
 	public int getX() {
 		return x;
 	}
 	public int getY() {
 		return y;
-	}
-	public int getDepth() {
-		return depth;
 	}
 	public int getJumps() {
 		return jumps;
@@ -51,7 +48,7 @@ class Visited{
 	
 }
 
-public class BAEKJOON_1600 {
+public class BAEKJOON_1600_말이되고픈원숭이 {
 
 	static int [][]ground;
 	static boolean [][]visited;
@@ -76,7 +73,7 @@ public class BAEKJOON_1600 {
 		int i,j;
 		ground=new int[W][H];
 		visited=new boolean[W][H];
-		mVisited=new boolean[W][H][100000000];
+		mVisited=new boolean[W][H][K+1];
 		
 		for (i = 0;  i< H; i++) {
 			line=br.readLine();
@@ -133,7 +130,7 @@ public class BAEKJOON_1600 {
 	
 	public static int bfs(int x,int y,int depth,int jumps) {
 		Queue<Monkey> monkeyQue=new LinkedList<Monkey>();
-		Monkey monkeyPos=new Monkey(x,y,depth,jumps);
+		Monkey monkeyPos=new Monkey(x,y,jumps);
 		monkeyQue.offer(monkeyPos);
 		
 		int breadth=0;
@@ -142,8 +139,7 @@ public class BAEKJOON_1600 {
 			while(--size>=0) {
 				monkeyPos=monkeyQue.poll();
 				x=monkeyPos.getX();
-				y=monkeyPos.getY();
-				depth=monkeyPos.getDepth();
+				y=monkeyPos.getY();				
 				jumps=monkeyPos.getJumps();
 				//return breadth if monkey reaches the destination
 				if(x==W-1 && y==H-1) {
@@ -155,9 +151,8 @@ public class BAEKJOON_1600 {
 					int ny=y+dym[i];
 					if(nx>=0 && nx<W && ny>=0 && ny<H && ground[nx][ny]!= 1) {
 						if(!mVisited[nx][ny][jumps]) {
-							mVisited[nx][ny][jumps]=true;
-							//System.out.println(nx+" "+ny+" "+depth);
-							monkeyQue.offer(new Monkey(nx,ny,depth+1,jumps));
+							mVisited[nx][ny][jumps]=true;				
+							monkeyQue.offer(new Monkey(nx,ny,jumps));
 						}
 					}
 				}
@@ -167,17 +162,14 @@ public class BAEKJOON_1600 {
 						int nx=x+dxh[i];
 						int ny=y+dyh[i];
 						if(nx>=0 && nx<W && ny>=0 && ny<H && ground[nx][ny]!= 1) {
-							if(!mVisited[nx][ny][jumps]) {
-								mVisited[nx][ny][jumps]=true;
-								monkeyQue.offer(new Monkey(nx,ny,depth+1,jumps+1));
+							if(!mVisited[nx][ny][jumps+1]) {
+								mVisited[nx][ny][jumps+1]=true;
+								monkeyQue.offer(new Monkey(nx,ny,jumps+1));
 							}
 						}
 					}
 				}
-				
-				
 			}
-			//System.out.println(breadth);
 			breadth++;
 		}
 		return -1;
