@@ -42,13 +42,10 @@ public class BAEKJOON_11659_구간합구하기4 {
 	public static void calculateRange(int start,int end) {
 		long stockpile;
 		if(start==0)
-			stockpile=collectives[end]-collectives[start];
+			stockpile=collectives[end];
 		else 
 			stockpile=collectives[end]-collectives[start-1];
 		
-//		for(int i=start-1;i<=end-1;i++) {
-//			stockpile+=numbers[i];
-//		}
 		output.append(stockpile);
 	}
 
