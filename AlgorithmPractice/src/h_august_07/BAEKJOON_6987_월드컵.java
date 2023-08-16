@@ -41,6 +41,7 @@ class Country{
 public class BAEKJOON_6987_월드컵 {
 	
 	static Country [] distribution=new Country [6];
+	static Country [] comparative=new Country[6];
 	static int[] protagon= {0,0,0,0,0,1,1,1,1,2,2,2,3,3,4};
 	static int[] enemy= {1,2,3,4,5,2,3,4,5,3,4,5,4,5,5};
 	static boolean possible;
