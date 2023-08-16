@@ -39,7 +39,7 @@ public class BAEKJOON_11659_구간합구하기4 {
 		
 	}
 	
-	public static void calculateRange(int start,int end) {
+	private static void calculateRange(int start,int end) {
 		long stockpile;
 		if(start==0)
 			stockpile=collectives[end];

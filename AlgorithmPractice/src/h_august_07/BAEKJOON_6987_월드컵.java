@@ -1,109 +1,126 @@
 package h_august_07;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+
+class Country{
+	private int wins,draws,losses;
+	public Country(int wins,int draws, int losses) {
+		this.wins=wins; this.draws=draws; this.losses=losses;
+	}
+	public int getWins() {
+		return wins;
+	}
+	public void setWins(int wins) {
+		this.wins = wins;
+	}
+	public int getDraws() {
+		return draws;
+	}
+	public void setDraws(int draws) {
+		this.draws = draws;
+	}
+	public int getLosses() {
+		return losses;
+	}
+	public void setLosses(int losses) {
+		this.losses = losses;
+	}
+	
+	public boolean isZero() {
+		if(this.losses==0 && this.draws== 0 && this.wins==0)
+			return true;
+		else 
+			return false;
+	}
+}
 
 
 public class BAEKJOON_6987_월드컵 {
 	
-	static int [][][] distribution=new int [4][6][3];
+	static Country [] distribution=new Country [6];
+	static int[] protagon= {0,0,0,0,0,1,1,1,1,2,2,2,3,3,4};
+	static int[] enemy= {1,2,3,4,5,2,3,4,5,3,4,5,4,5,5};
+	static boolean possible;
 	
-	public static void main(String[] args) {
-		Scanner scan = new Scanner(System.in);
-		int i,j,k;
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st;
+		int i,j;
 		
-		for(i=0;i<4;i++) 
-			for (j=0;j<6;j++) 
-				for(k=0;k<3;k++)
-					distribution[i][j][k]=scan.nextInt();
-		
-		int [] results=resultChecker();
 		
 		for(i=0;i<4;i++) {
-			System.out.print(results[i]);
-			if(i<3)
+			possible=true;
+			for(j=0;j<6;j++) {
+				st = new StringTokenizer(br.readLine());
+				distribution[j]=new Country(Integer.parseInt(st.nextToken()),Integer.parseInt(st.nextToken()),Integer.parseInt(st.nextToken()));
+				if(distribution[j].getWins()+distribution[j].getDraws()+distribution[j].getLosses()!=5) {
+					possible=false; break;
+				}
+			}
+			if(possible)
+				resultChecker(0);
+			
+			int outcome=possible?1:0;
+			System.out.print(outcome);
+			if(i!=3)
 				System.out.print(" ");
 		}
+		
+		
 	}
 	
-	public static int[] resultChecker() {
-		int []output=new int [4];
-		int i,j,k;
-		int wSum,dSum,lSum,cellSum=0;
-		List<Integer>draws;
-		AtomicInteger max=new AtomicInteger(),rest=new AtomicInteger();
-		
-		for(i=0;i<4;i++) { //rounds
-			wSum=0;dSum=0;lSum=0;
-			draws=new ArrayList<Integer>();
-			max.set(0);rest.set(0);
-			
-			for (j=0;j<6;j++) { //countries
-				cellSum=0;
-				for(k=0;k<3;k++) { //wdl
-					//get win,draw, lose sums
-					cellSum+=distribution[i][j][k];
-					switch(k) {
-					case 0: wSum+=distribution[i][j][k]; break;
-					case 1: dSum+=distribution[i][j][k]; 
-					draws.add(distribution[i][j][k]);break;
-					case 2: lSum+=distribution[i][j][k]; break;
-					}
+	private static void resultChecker(int match) {
+		if(match==15) {
+			for(int i=0;i<6;i++) {
+				if(!distribution[i].isZero()){
+					possible=false;
+					return;
 				}
-				if(cellSum!=5)
-					break;
 			}
-			
-			int temp=0;
-			for(int l=0;l<draws.size();l++) 
-				if(draws.get(l)>0) 
-					temp++;
-			
-			if(cellSum!=5)
-				output[i]=0;
-			drawMax(draws,max,rest);
-			
-			if((wSum!= lSum) || (wSum+dSum+lSum!=30) || (dSum%2!=0) || (temp==1)) {
-				output[i]=0;
-			}
-			else if(drawMax(draws,max,rest)==1 && max.intValue()>rest.intValue()) {
-				output[i]=0;
-			}
-			else 
-				output[i]=1;
-			
-		}
-		
-		return output;
-	} //end result checker
-	
-	public static int drawMax(List<Integer>draws, AtomicInteger max, AtomicInteger rest) {
-		int maxCount=1;
-		for(int i=0;i<draws.size();i++) {
-			if(max.intValue()<draws.get(i)) {
-				rest.set(rest.intValue()+max.intValue());
-				max.set(Math.max(max.intValue(),draws.get(i)));
-			}
-			else if(max.intValue()==draws.get(i))
-				maxCount++;
-			else {
-				rest.set(rest.intValue()+draws.get(i));
-			}
-		}
-		return maxCount;
-	}
-	
-	public static int wcRecursion(int index) {
-		//basis part
-		if(index==15) {
-			//compare input array and output array, if they're equal ok
 			return;
 		}
 		
-		//inductive part
+		int protWins=distribution[protagon[match]].getWins();
+		int protDraws=distribution[protagon[match]].getDraws();
+		int protLosses=distribution[protagon[match]].getLosses();
 		
+		int enemWins=distribution[enemy[match]].getWins();
+		int enemDraws=distribution[enemy[match]].getDraws();
+		int enemLosses=distribution[enemy[match]].getLosses();
+		
+		//if protagonist wins
+		if(protWins>0 && enemLosses>0) {
+			distribution[protagon[match]].setWins(protWins-1);
+			distribution[enemy[match]].setLosses(enemLosses-1);
+			resultChecker(match+1);
+			distribution[protagon[match]].setWins(protWins+1);
+			distribution[enemy[match]].setLosses(enemLosses+1);
+		}
+		//if protagonist losses
+		if(protLosses>0 && enemWins>0) {
+			distribution[protagon[match]].setLosses(protLosses-1);
+			distribution[enemy[match]].setWins(enemWins-1);
+			resultChecker(match+1);
+			distribution[protagon[match]].setLosses(protLosses+1);
+			distribution[enemy[match]].setWins(enemWins+1);
+		}
+		//if protagonist draws
+		if(protDraws>0 && enemDraws>0) {
+			distribution[protagon[match]].setDraws(protDraws-1);
+			distribution[enemy[match]].setDraws(enemDraws-1);
+			resultChecker(match+1);
+			distribution[protagon[match]].setDraws(protDraws+1);
+			distribution[enemy[match]].setDraws(enemDraws+1);
+		}
+		
+			
+			
+			
 	}
+	
+	
 
 }
