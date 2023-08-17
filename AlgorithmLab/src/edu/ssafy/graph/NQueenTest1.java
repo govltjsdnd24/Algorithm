@@ -1,4 +1,4 @@
-package edu.ssafy.backtracking;
+package edu.ssafy.graph;
 
 import java.util.Scanner;
 
