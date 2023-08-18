@@ -118,10 +118,13 @@ public class SWEA_5644_무선충전 {
 		setZone(bPer);
 		
 		//if aPer and bPer in same zone
+		
 		if(aPer.getCurrent()==bPer.getCurrent()) {
 			//divide power into half
 			aPer.getCurrent().setP(aPer.getCurrent().getP()/2);
 		}
+		
+		if()
 		
 		return -1;
 	}
@@ -134,6 +137,10 @@ public class SWEA_5644_무선충전 {
 					person.setCurrent(APs[i]);
 			}
 		}
+	}
+	
+	private static void findMax() {
+		
 	}
 	
 	
