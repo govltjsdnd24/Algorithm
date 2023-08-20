@@ -1,145 +1,106 @@
 package h_august_18;
 
-import java.util.*;
-import java.io.*;
+import java.util.Scanner;
 
-class Box{
+class ColoredPaper{
 	int size,count;
-	public Box(int size){
-		this.size=size;
-		count=5;
-	}
-	public int getSize() {
-		return size;
-	}
-	public void setSize(int size) {
-		this.size = size;
-	}
-	public int getCount() {
-		return count;
-	}
-	public void setCount(int count) {
-		this.count = count;
+	public ColoredPaper(int size, int count){
+		this.size=size; this.count=count;
 	}
 }
 
 public class BAEKJOON_17136_색종이붙이기 {
+	static int N=10;
+	static int S=5;
+	static int[][]paper=new int[N][N];
+	static ColoredPaper[] squares=new ColoredPaper[6];
+	static boolean[][]visited=new boolean[N][N];
+	static int output=Integer.MAX_VALUE;
 	
-	static int[][] paper;
-	
-	static Box[] boxes=new Box[6];
-	static int minBoxes=Integer.MAX_VALUE;
-
-	public static void main(String[] args) throws IOException {
-		BufferedReader br= new BufferedReader(new InputStreamReader(System.in));
-		StringTokenizer st;
+	public static void main(String[] args) {
+		Scanner scanner= new Scanner(System.in);
 		
-		int i,j;
-		paper=new int[10][10];
-		for(i=0;i<10;i++) {
-			st= new StringTokenizer(br.readLine());
-			for(j=0;j<10;j++) {
-				paper[i][j]=Integer.parseInt(st.nextToken());
+		for(int i=0;i<N;i++) {
+			for(int j=0; j<N;j++) {
+				paper[i][j]=scanner.nextInt();
 			}
 		}
-
-		recursion(0);
-		System.out.println(minBoxes==Integer.MAX_VALUE?-1:minBoxes);
+		
+		for(int i=1;i<=S;i++) {
+			squares[i]=new ColoredPaper(i, 5);
+		}
+		
+		fitSquares(0);
+		if(output==Integer.MAX_VALUE)
+			output=-1;
+		System.out.println(output);
 	}
 	
-	
-	private static void recursion(int cnt) {
-		int si=-1,sj=-1;
-		//search for 
-		L: for(int i=1;i<=10;i++) {
-			for(int j=1;j<=10;j++) {
-				if(paper[i][j]==1) {
-					si=i;
-					sj=j;
-					break L;
+	public static void fitSquares(int count) {
+		int i=0,j=0;
+		//find nonduplicate 1
+		Loop:
+		for(i=0;i<N;i++) {
+			for(j=0;j<N;j++) {
+				if(!visited[i][j] && paper[i][j]==1) {
+					break Loop;
 				}
+					
 			}
 		}
-		
-		//si,sj 색종이를 붙일 시작위치
-		//basis part (붙일위치가 없으면 그만)
-		if(si==-1 && sj==-1) {
-			minBoxes=Math.min(minBoxes, cnt);
+		if(i==N && j==N) {
+			output=Math.min(output, count);
 			return;
 		}
 		
-		//inductive part
-		//붙일 수 있는 최대 사이즈를 구한다.
-		int size= getSize(si,sj);
-		//최대 사이즈 부터 붙여 나간다(백트래킹)
-		while(size>0) {
-			//색종이가 남아있으면
-			if(boxes[size].getCount()>0) {
-				//지도에 붙입니다
-				for(int i=si; i< si+size; i++) {
-					for (int j=sj;j<sj+size;j++) {
-						paper[i][j]=0;
-					}
-				}
-				boxes[size].setCount(boxes[size].getCount()-1);
-				recursion(cnt+1);
-				boxes[size].setCount(boxes[size].getCount()+1);
-				for(int i=si;i<si+size;i++) {
-					for(int j=sj;j<sj+size;j++) {
-						paper[i][j]=1;
-					}
-				}
+		int size=findBiggestRect(i,j);
+		
+		for(int k=size;k>0;k--) {
+			if(squares[k].count>0) {
+				squares[k].count--;
+				processVisit(i,j,k,true);
+				fitSquares(count+1);
+				processVisit(i,j,k,false);
+				squares[k].count++;
 			}
-			size--;
 		}
 		
 	}
+	
+	public static int findBiggestRect(int r,int c) {
+		int size=0;
+		boolean checker;
 
-
-	private static int getSize(int si, int sj) {
-		int size= 5;
-		while(size>0) {
-			boolean isOk= false;
-			L:for(int i=si;i<si+size;i++) {
-				for(int j=sj;sj<sj+size;j++) {
-					if(i>=0&& i<10 && j>=0 && j<10 && paper[i][j]==0) {
-						isOk=true;
-						break L;
+		for(int i=S;i>0;i--) {
+			if(squares[i].count<=0) 
+				continue;
+			
+			//check if this size of a colored paper can fit 
+			checker=true;
+			Loop:
+			for(int j=r;j<r+i;j++) {
+				for(int k=c;k<c+i;k++) {
+					if(j>=N || k>=N || paper[j][k]==0 || visited[j][k]) {
+						checker=false;
+						break Loop;
 					}
 				}
 			}
-			if(!isOk) {
-				return size;
+			if(checker) {
+				size=i;
+				break;
 			}
-			size--;
 		}
-		return 0;
+		
+		return size;
 	}
 	
-	
-	
-	
-//	public static void recursion(int r,int c,int size,int usedBoxes) {
-//		if(!placementAvailable()) {
-//			minBoxes=Math.min(minBoxes, usedBoxes);
-//			return;
-//		}
-//		int sizeLimit=findLimit(r,c);
-//		
-//		for (int i = 0; i < 10; i++) {
-//			for (int j = 0; j < 10; j++) {
-//				for(int k=0;k<sizeLimit;k++) {
-//					int er=r+size; int ec=c+size;
-//					if(er>=0 && er<10 && ec>=0 && ec<10 && !filled[er][ec]) {
-//						placeBox();
-//						recursion(r+i);
-//						unplaceBox();
-//					}
-//				}
-//			}
-//		}
-//		
-//		
-//	}
+	public static void processVisit(int r,int c, int size, boolean vou) {
+		for(int i=r;i<r+size;i++) {
+			for(int j=c;j<c+size;j++) {
+					visited[i][j]=vou;
+			}
+		}
+	}
 
 }

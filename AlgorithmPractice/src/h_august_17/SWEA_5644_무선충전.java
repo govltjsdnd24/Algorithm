@@ -1,6 +1,6 @@
 package h_august_17;
 
-import java.util.Scanner;
+import java.util.*;
 
 class AccessPoint{
 	private int r,c,d,p;
@@ -114,8 +114,9 @@ public class SWEA_5644_무선충전 {
 	}
 	
 	private static int batteryAssign() {
-		setZone(aPer);
-		setZone(bPer);
+//		setZone(aPer);
+//		setZone(bPer);
+		setZone();
 		
 		//if aPer and bPer in same zone
 		
@@ -129,17 +130,47 @@ public class SWEA_5644_무선충전 {
 		return -1;
 	}
 	
-	private static void setZone(Person person) {
+//	private static void setZone(Person person) {
+//		for(int i=0;i<A;i++) {
+//			if(APs[i].getD()>=Math.abs(person.getR()-APs[i].getR())+Math.abs(person.getC()-APs[i].getC())){
+//				//if person is inside no zone, or the zone has more power than the former
+//				if(person.getCurrent()==null || person.getCurrent().getP()<APs[i].getP())
+//					person.setCurrent(APs[i]);
+//			}
+//		}
+//	}
+	
+	private static void setZone() {
+		ArrayList<AccessPoint> aAPs=new ArrayList<>();
+		ArrayList<AccessPoint> bAPs=new ArrayList<>();
+		
+		//put a and b's available APs into arraylists
 		for(int i=0;i<A;i++) {
-			if(APs[i].getD()>=Math.abs(person.getR()-APs[i].getR())+Math.abs(person.getC()-APs[i].getC())){
-				//if person is inside no zone, or the zone has more power than the former
-				if(person.getCurrent()==null || person.getCurrent().getP()<APs[i].getP())
-					person.setCurrent(APs[i]);
+			if(APs[i].getD()>=Math.abs(aPer.getR()-APs[i].getR())+Math.abs(aPer.getC()-APs[i].getC())){
+				aAPs.add(APs[i]);
 			}
 		}
-	}
-	
-	private static void findMax() {
+		for(int i=0;i<A;i++) {
+			if(APs[i].getD()>=Math.abs(bPer.getR()-APs[i].getR())+Math.abs(bPer.getC()-APs[i].getC())){
+				bAPs.add(APs[i]);
+			}
+		}
+		
+		int sum=0;
+		AccessPoint aAssign;
+		AccessPoint bAssign;
+		for(int i=0;i<aAPs.size();i++) {
+			for(int j=0;j<bAPs.size();j++) {
+				AccessPoint aTemp=aAPs.get(i);
+				AccessPoint bTemp=bAPs.get(j);
+				if(aTemp.getP()+bTemp.getP()>sum) {
+					aAssign=aTemp;
+					bAssign=bTemp;
+				}
+			}
+		}
+		
+		
 		
 	}
 	
