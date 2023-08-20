@@ -7,6 +7,9 @@ import java.util.StringTokenizer;
 
 class Country{
 	private int wins,draws,losses;
+	public Country() {
+		this(0,0,0);
+	}
 	public Country(int wins,int draws, int losses) {
 		this.wins=wins; this.draws=draws; this.losses=losses;
 	}
@@ -29,12 +32,6 @@ class Country{
 		this.losses = losses;
 	}
 	
-	public boolean isZero() {
-		if(this.losses==0 && this.draws== 0 && this.wins==0)
-			return true;
-		else 
-			return false;
-	}
 }
 
 
@@ -54,15 +51,20 @@ public class BAEKJOON_6987_월드컵 {
 		
 		for(i=0;i<4;i++) {
 			possible=true;
-			for(j=0;j<6;j++) {
-				st = new StringTokenizer(br.readLine());
+			st = new StringTokenizer(br.readLine());
+			for(j=0;j<6;j++) {	
+				comparative[j]=new Country();
 				distribution[j]=new Country(Integer.parseInt(st.nextToken()),Integer.parseInt(st.nextToken()),Integer.parseInt(st.nextToken()));
 				if(distribution[j].getWins()+distribution[j].getDraws()+distribution[j].getLosses()!=5) {
 					possible=false; break;
 				}
 			}
-			if(possible)
+			
+			if(possible) {
+				possible=false;
 				resultChecker(0);
+			}
+			
 			
 			int outcome=possible?1:0;
 			System.out.print(outcome);
@@ -76,11 +78,12 @@ public class BAEKJOON_6987_월드컵 {
 	private static void resultChecker(int match) {
 		if(match==15) {
 			for(int i=0;i<6;i++) {
-				if(!distribution[i].isZero()){
-					possible=false;
+				
+				if(!(comparative[i].getWins()==distribution[i].getWins()&&comparative[i].getDraws()==distribution[i].getDraws()&&comparative[i].getLosses()==distribution[i].getLosses())){
 					return;
 				}
 			}
+			possible=true;
 			return;
 		}
 		
@@ -93,28 +96,28 @@ public class BAEKJOON_6987_월드컵 {
 		int enemLosses=distribution[enemy[match]].getLosses();
 		
 		//if protagonist wins
-		if(protWins>0 && enemLosses>0) {
-			distribution[protagon[match]].setWins(protWins-1);
-			distribution[enemy[match]].setLosses(enemLosses-1);
+		if(comparative[protagon[match]].getWins()<protWins && comparative[enemy[match]].getLosses()<enemLosses) {
+			comparative[protagon[match]].setWins(comparative[protagon[match]].getWins()+1);
+			comparative[enemy[match]].setLosses(comparative[enemy[match]].getLosses()+1);
 			resultChecker(match+1);
-			distribution[protagon[match]].setWins(protWins+1);
-			distribution[enemy[match]].setLosses(enemLosses+1);
+			comparative[protagon[match]].setWins(comparative[protagon[match]].getWins()-1);
+			comparative[enemy[match]].setLosses(comparative[enemy[match]].getLosses()-1);
+		}
+		//if protagonist wins
+		if(comparative[protagon[match]].getDraws()<protDraws && comparative[enemy[match]].getDraws()<enemDraws) {
+			comparative[protagon[match]].setDraws(comparative[protagon[match]].getDraws()+1);
+			comparative[enemy[match]].setDraws(comparative[enemy[match]].getDraws()+1);
+			resultChecker(match+1);
+			comparative[protagon[match]].setDraws(comparative[protagon[match]].getDraws()-1);
+			comparative[enemy[match]].setDraws(comparative[enemy[match]].getDraws()-1);
 		}
 		//if protagonist losses
-		if(protLosses>0 && enemWins>0) {
-			distribution[protagon[match]].setLosses(protLosses-1);
-			distribution[enemy[match]].setWins(enemWins-1);
+		if(comparative[protagon[match]].getLosses()<protLosses && comparative[enemy[match]].getWins()<enemWins) {
+			comparative[protagon[match]].setLosses(comparative[protagon[match]].getLosses()+1);
+			comparative[enemy[match]].setWins(comparative[enemy[match]].getWins()+1);
 			resultChecker(match+1);
-			distribution[protagon[match]].setLosses(protLosses+1);
-			distribution[enemy[match]].setWins(enemWins+1);
-		}
-		//if protagonist draws
-		if(protDraws>0 && enemDraws>0) {
-			distribution[protagon[match]].setDraws(protDraws-1);
-			distribution[enemy[match]].setDraws(enemDraws-1);
-			resultChecker(match+1);
-			distribution[protagon[match]].setDraws(protDraws+1);
-			distribution[enemy[match]].setDraws(enemDraws+1);
+			comparative[protagon[match]].setLosses(comparative[protagon[match]].getLosses()-1);
+			comparative[enemy[match]].setWins(comparative[enemy[match]].getWins()-1);
 		}
 		
 			
