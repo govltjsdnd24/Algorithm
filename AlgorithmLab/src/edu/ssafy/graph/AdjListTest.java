@@ -35,7 +35,9 @@ public class AdjListTest {
 			adjList[to]=new Node(from,adjList[to]);
 		}
 		
-		bfs(adjList);
+//		bfs(adjList);
+		dfs(adjList,new boolean[V],0);
+		
 		for(Node node: adjList) { // node: 각 정점의 인접리스트의 헤드
 			System.out.println(node);
 		}
@@ -63,6 +65,21 @@ public class AdjListTest {
 			}
 			
 		}
+		
+	}
+	
+	
+	public static void dfs(Node[]adjList,boolean[] visited,int current) {
+		visited[current]=true;
+		System.out.println((char)(current+65));
+		
+		//현 정점의 인접정점들 체크하며 대기열에 넣기
+		for(Node temp= adjList[current]; temp!=null; temp= temp.next) {
+			if(!visited[temp.vertext]) {
+				dfs(adjList,visited,temp.vertext);
+			}
+		}
+			
 		
 	}
 

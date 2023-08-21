@@ -20,8 +20,8 @@ public class AdjMatrixTest {
 			int to= scan.nextInt();
 			adjMatrix[to][from]=adjMatrix[from][to]=1;
 		}
-		bfs(adjMatrix);
-		
+//		bfs(adjMatrix);
+		dfs(adjMatrix,new boolean[V],0);
 		for(int[] is: adjMatrix) {
 			System.out.println(Arrays.toString(is));
 		}
@@ -49,6 +49,20 @@ public class AdjMatrixTest {
 			}
 			
 		}
+		
+	}
+	
+	public static void dfs(int [][]adjMatrix,boolean[] visited,int current) {
+		visited[current]=true;
+		System.out.println((char)(current+65));
+		
+		//현 정점의 인접정점들 체크하며 대기열에 넣기
+		for(int i=0,size=adjMatrix.length;i<size;i++) {
+			if(adjMatrix[current][i]==1 && !visited[i]) {
+				dfs(adjMatrix,visited,i);
+			}
+		}
+			
 		
 	}
 
