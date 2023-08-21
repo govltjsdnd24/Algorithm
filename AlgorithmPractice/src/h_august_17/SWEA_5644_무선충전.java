@@ -2,7 +2,7 @@ package h_august_17;
 
 import java.util.*;
 
-class AccessPoint{
+class AccessPoint implements Comparable<AccessPoint>{
 	private int r,c,d,p;
 	public AccessPoint(int r,int c, int d, int p) {
 		this.r=r; this.c=c; this.d=d; this.p=p;
@@ -22,6 +22,23 @@ class AccessPoint{
 	public void setP(int p) {
 		this.p=p;
 	}
+	@Override
+	public int compareTo(AccessPoint ap) {
+		return Integer.compare(p, ap.getP());
+	}
+	@Override
+	public String toString() {
+		return "AccessPoint [r=" + r + ", c=" + c + ", d=" + d + ", p=" + p + "]";
+	}
+	
+	public boolean equals(AccessPoint ap) {
+		if(this.r==ap.getR() && this.c==ap.getC() && this.d==ap.getD() && this.p==ap.getP())
+			return true;
+		return false;
+	}
+	
+	
+	
 }
 
 class Person{
@@ -53,6 +70,10 @@ class Person{
 	}
 	public void setCharge(int charge) {
 		this.charge=charge;
+	}
+	@Override
+	public String toString() {
+		return "Person [r=" + r + ", c=" + c + ", charge=" + charge + ", current=" + current + "]";
 	}
 	
 	
@@ -91,11 +112,19 @@ public class SWEA_5644_무선충전 {
 			
 			for(i=0;i<M;i++) {
 				aMove[i]=scan.nextInt();
+				
+			}
+			for(i=0;i<M;i++) {
 				bMove[i]=scan.nextInt();
+				
 			}
 			
 			for(i=0;i<A;i++) {
-				APs[i]=new AccessPoint(scan.nextInt(),scan.nextInt(),scan.nextInt(),scan.nextInt());
+				int x=scan.nextInt();
+				int y=scan.nextInt();
+				int s=scan.nextInt();
+				int pow=scan.nextInt();
+				APs[i]=new AccessPoint(y,x,s,pow);
 			}
 			
 			calculateBattery();
@@ -106,39 +135,23 @@ public class SWEA_5644_무선충전 {
 	
 	private static void calculateBattery() {
 		int i;
-		for(i=0;i<M;i++) {
-			batteryAssign();
-			aPer.setCharge(aPer.getCharge()+aPer.getCurrent().getP());
-			bPer.setCharge(bPer.getCharge()+bPer.getCurrent().getP());
+		for(i=0;i<=M;i++) {
+			setZone();
+			if(aPer.getCurrent()!=null)
+				aPer.setCharge(aPer.getCharge()+aPer.getCurrent().getP());
+			if(bPer.getCurrent()!=null) 
+				bPer.setCharge(bPer.getCharge()+bPer.getCurrent().getP());
+			if(i!=M)
+				movePeople(i);
 		}
 	}
 	
-	private static int batteryAssign() {
-//		setZone(aPer);
-//		setZone(bPer);
-		setZone();
-		
-		//if aPer and bPer in same zone
-		
-		if(aPer.getCurrent()==bPer.getCurrent()) {
-			//divide power into half
-			aPer.getCurrent().setP(aPer.getCurrent().getP()/2);
-		}
-		
-		if()
-		
-		return -1;
+	private static void movePeople(int i) {
+		aPer.setR(aPer.getR()+dr[aMove[i]]);
+		aPer.setC(aPer.getC()+dc[aMove[i]]);
+		bPer.setR(bPer.getR()+dr[bMove[i]]);
+		bPer.setC(bPer.getC()+dc[bMove[i]]);
 	}
-	
-//	private static void setZone(Person person) {
-//		for(int i=0;i<A;i++) {
-//			if(APs[i].getD()>=Math.abs(person.getR()-APs[i].getR())+Math.abs(person.getC()-APs[i].getC())){
-//				//if person is inside no zone, or the zone has more power than the former
-//				if(person.getCurrent()==null || person.getCurrent().getP()<APs[i].getP())
-//					person.setCurrent(APs[i]);
-//			}
-//		}
-//	}
 	
 	private static void setZone() {
 		ArrayList<AccessPoint> aAPs=new ArrayList<>();
@@ -157,21 +170,44 @@ public class SWEA_5644_무선충전 {
 		}
 		
 		int sum=0;
-		AccessPoint aAssign;
-		AccessPoint bAssign;
-		for(int i=0;i<aAPs.size();i++) {
-			for(int j=0;j<bAPs.size();j++) {
-				AccessPoint aTemp=aAPs.get(i);
-				AccessPoint bTemp=bAPs.get(j);
-				if(aTemp.getP()+bTemp.getP()>sum) {
-					aAssign=aTemp;
-					bAssign=bTemp;
+		AccessPoint aAssign=null;
+		AccessPoint bAssign=null;
+		
+		if(bAPs.isEmpty() && !aAPs.isEmpty())
+			aAssign=Collections.max(aAPs);
+		else if(aAPs.isEmpty() && !bAPs.isEmpty())
+			bAssign=Collections.max(bAPs);
+		else if(!aAPs.isEmpty() && !bAPs.isEmpty()){
+			for(int i=0;i<aAPs.size();i++) {
+				for(int j=0;j<bAPs.size();j++) {
+					AccessPoint aTemp=aAPs.get(i);
+					AccessPoint bTemp=bAPs.get(j);
+					
+					if(aTemp.equals(bTemp)) {
+						if(aTemp.getP()>sum) {
+							aAssign=new AccessPoint(aTemp.getR(),aTemp.getC(),aTemp.getD(),aTemp.getP()/2);
+							bAssign=new AccessPoint(aTemp.getR(),aTemp.getC(),aTemp.getD(),aTemp.getP()/2);
+							sum=aTemp.getP();
+						}
+					}
+					else {
+						if(aTemp.getP()+bTemp.getP()>sum) {
+							aAssign=aTemp;
+							bAssign=bTemp;
+							sum=aTemp.getP()+bTemp.getP();
+						}
+					}
+					
+					
 				}
 			}
 		}
 		
-		
-		
+		aPer.setCurrent(aAssign);
+		bPer.setCurrent(bAssign);
+//		System.out.println("a: "+aPer.getCurrent());
+//		System.out.println("b: "+bPer.getCurrent());
+//		System.out.println();
 	}
 	
 	
