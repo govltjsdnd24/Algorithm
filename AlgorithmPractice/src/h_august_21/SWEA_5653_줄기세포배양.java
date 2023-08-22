@@ -3,21 +3,21 @@ package h_august_21;
 import java.io.*;
 import java.util.*;
 
-class Cell{
+class Cellc{
 	int r,c,level,counter,rcounter;
-	boolean canPrint;
 	Cell(int r,int c){
 		this(r,c,0);
 	}
 	
 	Cell(int r,int c,int level){
 		this.r=r; this.c=c; this.level = level;
-		this.counter=level; this.rcounter=level;
-		canPrint=true;
+		this.counter=level;
+		
+		this.rcounter=level;
 	}
 	void decreaseCounter() {
 		counter--;
-	}
+	} 
 	
 	@Override
 	public boolean equals(Object obj) {
@@ -91,11 +91,13 @@ public class SWEA_5653_줄기세포배양 {
 		while(breadth!=K) {
 			int size=active.size();
 			int index=0;
+			ArrayList<Cell>added=new ArrayList<>();
 			while(--size>=0) {
 				//find cell with counter==0
 				Cell cell=null;
-				for(int i=index;i<index+size;i++) {
-					if(active.get(i).counter==0 && active.get(i).canPrint) {
+				for(int i=index;i<=index+size;i++) {
+					if(active.get(i).counter==0 && active.get(i).rcounter==active.get(i).level && !added.contains(active.get(i))) {
+						added.add(active.get(i));
 						cell=active.get(i);
 						break;
 					}
@@ -110,33 +112,37 @@ public class SWEA_5653_줄기세포배양 {
 						Cell temp=new Cell(nr,nc);
 						if(!active.contains(temp) && !dormant.contains(temp)) {
 							//after that mark as visited
-							active.add(new Cell(nr,nc,cell.level+1));
+							active.add(new Cell(nr,nc,cell.level));
 						}
 						else if(active.contains(temp)){
 							Cell compCell=active.get(active.indexOf(temp));
-							if(compCell.level+1<cell.level+1 && compCell.level+1==compCell.counter+1) {
-								compCell.level=cell.level+1;
+							if(compCell.level<cell.level && compCell.level==compCell.counter) {
+								compCell.level=cell.level;
 							}
 						}
 					}
 					//move cell from active to dormant
+
+					
 					if(cell.rcounter==0) {
 						active.remove(cell);
 						dormant.add(cell);
 					}
 							
 				}
-				else {
-					index++;
-				}
+				
+				index++;
+				
 			}
 			System.out.println();
 			
 			breadth++;
 			//세포들 count down
 			for(int i=0;i<active.size();i++) {
-				active.get(i).decreaseCounter();
-				active.get(i).rcounter--;
+				if(active.get(i).counter>0 && (i<index || active.get(i).level>1))
+					active.get(i).decreaseCounter();
+				else if(active.get(i).counter==0)
+					active.get(i).rcounter--;
 			}
 		}
 		

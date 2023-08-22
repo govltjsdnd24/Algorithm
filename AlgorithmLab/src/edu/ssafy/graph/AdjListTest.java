@@ -33,6 +33,7 @@ public class AdjListTest {
 			int to= scan.nextInt();
 			adjList[from]= new Node(to,adjList[from]); //첫 원소 삽입
 			adjList[to]=new Node(from,adjList[to]);
+			System.out.println(adjList[from]+" \n"+adjList[to]);
 		}
 		
 //		bfs(adjList);
