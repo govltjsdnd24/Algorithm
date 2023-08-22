@@ -3,6 +3,7 @@ package h_august_22;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 import java.util.StringTokenizer;
 
 
@@ -11,23 +12,28 @@ class Magnet{
 	
 	void turnClockwise() {
 		char temp=cogs[7];
-		for(int i=0;i<7;i++) {
-			cogs[i]=cogs[i+1];
+		for(int i=7;i>0;i--) {
+			cogs[i]=cogs[i-1];
 		}
 		cogs[0]=temp;
 	}
 	void turnCounterClockwise() {
 		char temp=cogs[0];
-		for(int i=7;i>0;i--) {
-			cogs[i]=cogs[i-1];
+		for(int i=0;i<7;i++) {
+			cogs[i]=cogs[i+1];
 		}
 		cogs[7]=temp;
 	}
-	boolean isTurnable(int side,char c) {
+	
+	boolean isTurnable(int side,char c) {	
 		if(cogs[side]!=c)
 			return true;
 		else
 			return false;
+	}
+	@Override
+	public String toString() {
+		return "Magnet [cogs=" + Arrays.toString(cogs) + "]";
 	}
 	
 }
@@ -35,12 +41,14 @@ class Magnet{
 public class SWEA_4012_특이한자석 {
 	
 	static int K;
-	static Magnet[]magnets=new Magnet[4];
+	static Magnet[]magnets;
+	static boolean[]visited;
 	static int[][] moves;
 	
 	static final int ARROWPOS=0;
 	static final int RIGHTCOG=2;
 	static final int LEFTCOG=6;
+	
 
 	public static void main(String[] args) throws IOException {
 		BufferedReader br= new BufferedReader(new InputStreamReader(System.in));
@@ -54,8 +62,8 @@ public class SWEA_4012_특이한자석 {
 			int sum=0;
 			st= new StringTokenizer(br.readLine());
 			K=Integer.parseInt(st.nextToken());
-			
-			moves=new int[K][2];
+	
+			magnets=new Magnet[4];
 			
 			for(i=0;i<4;i++) {
 				magnets[i]=new Magnet();
@@ -65,16 +73,20 @@ public class SWEA_4012_특이한자석 {
 					magnets[i].cogs[j]=(temp==0?'N':'S');
 				}
 			}
-			
+
 			for (k = 0; k < K; k++) {
 				st= new StringTokenizer(br.readLine());
-				turnCogwheel(Integer.parseInt(st.nextToken()),Integer.parseInt(st.nextToken()));
+				visited=new boolean[4];
+				int index=Integer.parseInt(st.nextToken())-1;
+				
+				visited[index]=true;
+				turnCogwheel(index,Integer.parseInt(st.nextToken()));
+
 			}
 			
 			for (i = 0; i < 4; i++) {
 				if(magnets[i].cogs[ARROWPOS]=='S') {
-					int score=i*2;
-					sum+=(score!=0?i*2:0);
+					sum+=Math.pow(2, i);
 				}
 			}
 			
@@ -84,42 +96,28 @@ public class SWEA_4012_특이한자석 {
 	}
 	
 	public static void turnCogwheel(int index,int direction) {
-		int current=index-1;
-		if(direction==1) {
-			magnets[current].turnClockwise();
-			int tempD=direction*-1;
-			for(int i=current;i>0;--i) {
-				if(magnets[i].isTurnable(LEFTCOG, magnets[i-1].cogs[RIGHTCOG])){
-					if(tempD==1)
-						magnets[i-1].turnClockwise();
-					else
-						magnets[i-1].turnCounterClockwise();
-					tempD=direction*-1;
-				}
-				else
-					break;
-			}
-			for(int i=current;i<7;++i) {
-				if(magnets[i].isTurnable(RIGHTCOG, magnets[i+1].cogs[LEFTCOG])){
-					if(tempD==1)
-						magnets[i+1].turnClockwise();
-					else
-						magnets[i+1].turnCounterClockwise();
-					tempD=direction*-1;
-				}
-				else
-					break;
-			}
+		
+		boolean left=false,right=false;
+		
+		if(index-1>=0 && !visited[index-1])
+			left=magnets[index].isTurnable(LEFTCOG,magnets[index-1].cogs[RIGHTCOG]);
+		if(index+1<4 && !visited[index+1])
+			right=magnets[index].isTurnable(RIGHTCOG,magnets[index+1].cogs[LEFTCOG]);
+		
+		if(direction==1)
+			magnets[index].turnClockwise();
+		else
+			magnets[index].turnCounterClockwise();
+		
+		if(left) {
+			visited[index-1]=true;
+			turnCogwheel(index-1,direction*-1);
 		}
-		else if(direction==-1) {
-			magnets[current].turnCounterClockwise();
-			for(int i=current;i>=0;--i) {
-				
-			}
-			for(int i=current;i<8;++i) {
-				
-			}
+		if(right) {
+			visited[index+1]=true;
+			turnCogwheel(index+1,direction*-1);
 		}
+		
 	}
 
 }
