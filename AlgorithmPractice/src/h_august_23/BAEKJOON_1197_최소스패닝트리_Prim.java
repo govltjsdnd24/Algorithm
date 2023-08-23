@@ -64,7 +64,7 @@ public class BAEKJOON_1197_최소스패닝트리_Prim {
             visited[cur.e]=true;
             int size=adj.length;
             for (int i = 1; i < size; i++) {
-            	Vertex next=new Vertex(i,adj[cur.e][i]);
+            	
                 if (!visited[i] &&dist[i]>adj[cur.e][i]&&adj[cur.e][i]>0) {
                     dist[i]=adj[cur.e][i];
                     Q.add(new Vertex(i, adj[cur.e][i]));

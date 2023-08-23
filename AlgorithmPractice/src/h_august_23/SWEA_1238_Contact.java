@@ -21,8 +21,9 @@ class Node{
 public class SWEA_1238_Contact {
 	
 	static int L,S;
-	static Node[] nodeList;
-	static Map<Integer,Node[]> nodeMap;
+	static Map<Integer,Node> nodeMap;
+	static Object[] nodes;
+	static boolean []visited;
 
 	public static void main(String[] args) throws IOException {
 		BufferedReader br= new BufferedReader(new InputStreamReader(System.in));
@@ -44,16 +45,68 @@ public class SWEA_1238_Contact {
 				set.add(tos[i]);
 			}
 			
-			nodeMap= new HashMap<Integer,Node[]>();
+			nodeMap= new HashMap<Integer,Node>();
 			Iterator<Integer>iterator=set.iterator();
+			visited=new boolean[set.size()];
+			nodes=set.toArray();
 			
+			int index=0;
+			int counter=0;
 			while(iterator.hasNext()) {
-				nodeMap.put(iterator.next(), null);
+				int next=iterator.next();
+				nodeMap.put(next, null);
+				if(next==S)
+					index=counter;
+				counter++;
 			}
 			
-			System.out.println(nodeMap.toString());
+			for(int i=0;i<L/2;i++) {
+				nodeMap.put(froms[i],new Node(tos[i],nodeMap.get(froms[i])));
+			}
+			
+			System.out.println("bfs "+bfsContact(index));
 			
 		}
+	}
+	
+	public static int bfsContact(int index) {
+		Queue<Node> queue=new LinkedList<Node>();
+		queue.offer(nodeMap.get(nodes[index]));
+//		visited[index]=true;
+		int max=Integer.MIN_VALUE;
+		
+		int depth=0;
+		while(!queue.isEmpty()) {
+			System.out.println(queue.size());
+			int size=queue.size();
+			while(--size>=0) {
+				Node current=queue.poll();
+				max=Integer.MIN_VALUE;
+				System.out.println("here");
+				while(current!=null) {
+					System.out.println("cur: "+current.vertex);
+					int currIndex=find(current.vertex);
+					if(!visited[currIndex]) {
+						System.out.println(current.vertex);
+						max=Math.max(max, current.vertex);
+						visited[currIndex]=true;
+						queue.offer(current.next);
+					}
+					current=current.next;
+				}
+			}			
+			depth++;
+		}
+		
+		return max;
+	}
+	
+	public static int find(int vertex) {
+		for (int i = 0; i < nodes.length; i++) {
+			if((int)nodes[i]==vertex)
+				return i;
+		}
+		return -1;
 	}
 
 }
