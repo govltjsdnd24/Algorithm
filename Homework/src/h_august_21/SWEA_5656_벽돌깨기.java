@@ -78,6 +78,7 @@ public class SWEA_5656_벽돌깨기 {
 			print(tScreen);
 			System.out.println();
 			Block[] tArray=assignArray(tScreen,array);
+			System.out.println(tScreen);
 			findCombination(tScreen,tArray,oIndex,cIndex+1);
 		}
 	}
@@ -121,8 +122,6 @@ public class SWEA_5656_벽돌깨기 {
 	
 	public static void dropBlocks(int [][]screen){
 		boolean[][]visited=new boolean[H][W];
-//		System.out.println("before");
-//		print(screen);
 		for (int i = H-1; i >0; i--) {
 			for (int j = 0; j < W; j++) {
 				if(screen[i][j]!=0 && !visited[i][j]) {
@@ -138,10 +137,6 @@ public class SWEA_5656_벽돌깨기 {
 				}
 			}
 		}
-//		System.out.println("after");
-//		print(screen);
-		
-		
 	}
 	
 	public static Block[] assignArray(int[][] screen, Block[] array) {

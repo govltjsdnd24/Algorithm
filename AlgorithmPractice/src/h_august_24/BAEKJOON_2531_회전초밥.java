@@ -10,6 +10,7 @@ public class BAEKJOON_2531_회전초밥 {
 	
 	static int N,d,k,c;
 	static ArrayList<Integer>belt;
+	static int[] types;
 	
 	public static void main(String[] args) throws IOException {
 		BufferedReader br= new BufferedReader(new InputStreamReader(System.in));
@@ -21,13 +22,11 @@ public class BAEKJOON_2531_회전초밥 {
 		c=Integer.parseInt(st.nextToken());
 		
 		belt=new ArrayList<Integer>();
+		types=new int[d+1];
 		for (int i = 0; i < N; i++) {
 			st= new StringTokenizer(br.readLine());
 			belt.add(Integer.parseInt(st.nextToken()));
 		}
-		
-		if(!belt.contains(c))
-			belt.add(c);
 		
 		System.out.println(findMax());
 	}
@@ -35,39 +34,34 @@ public class BAEKJOON_2531_회전초밥 {
 		
 		
 		int counter=0;
-		ArrayList<Integer>sushis=new ArrayList<Integer>();
 		
 		for (int i = 0; i <k; i++) {
-			if(!sushis.contains(belt.get(i)))
+			if(types[belt.get(i)]==0)
 				counter++;
-			sushis.add(belt.get(i));
+			types[belt.get(i)]++;
 		}
-		if(counter==k && (sushis.get(N-1)==c || sushis.get(k+1)==c))
+		if(counter==k && !belt.contains(c))
 			return k+1;
 		
-		int start=1;
+		int start=0;
 		int end=k;
 		int max=counter;
+		
 		while(start!=N) {
-			sushis.remove(belt.get(start));
-			start++;
-			if(!sushis.contains(belt.get(start-1)))
+			
+			if(counter>=max) 
+				max=types[c]==0?counter+1:counter;
+			
+			types[belt.get(start)]--;
+			if(types[belt.get(start)]==0)
 				counter--;
+			start++;
 			
-			if(!sushis.contains(belt.get(end%N))) 
+			if(types[belt.get(end%N)]==0) 
 				counter++;
-			System.out.println("be :"+belt.get(end%N));
+			types[belt.get(end%N)]++;
 			end++;
-			sushis.add(belt.get(end%N));
 			
-			System.out.println(start+" "+end+" "+counter);
-			System.out.println(belt.get(start)+ " "+belt.get(end%N));
-			max=Math.max(belt.get(start-1)==c?counter+1:counter, max);
-			System.out.println("max:" + max);
-			if(counter==k && (belt.get(start-1)==c || belt.get(end%N)==c)) {
-				max=(counter++);
-				break;
-			}
 		}
 		return max;
 	}
