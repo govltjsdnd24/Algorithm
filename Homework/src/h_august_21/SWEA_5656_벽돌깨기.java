@@ -12,7 +12,7 @@ class Block{
 	}
 	@Override
 	public String toString() {
-		return "Block [r=" + r + ", c=" + c + "]";
+		return "Block [r=" + r + ", c=" + c + ", size="+ size+"]";
 	}
 	
 }
@@ -64,7 +64,7 @@ public class SWEA_5656_벽돌깨기 {
 	
 	public static void findCombination(int [][]screen, Block[] array,int oIndex,int cIndex) {
 		if(cIndex==combination.length) {
-//			System.out.println(Arrays.toString(combination));
+			System.out.println(Arrays.toString(combination));
 			output=Math.min(output, countZeros(screen));
 			return;
 		}
@@ -72,8 +72,11 @@ public class SWEA_5656_벽돌깨기 {
 		for(int i=oIndex;i<array.length;i++) {
 			combination[cIndex]=array[i];
 			int[][]tScreen=copyScreen(screen);
-			
+			print(tScreen);
+			System.out.println(array[i]);
 			explodeBlocks(tScreen,array[i]);
+			print(tScreen);
+			System.out.println();
 			Block[] tArray=assignArray(tScreen,array);
 			findCombination(tScreen,tArray,oIndex,cIndex+1);
 		}
@@ -118,8 +121,9 @@ public class SWEA_5656_벽돌깨기 {
 	
 	public static void dropBlocks(int [][]screen){
 		boolean[][]visited=new boolean[H][W];
-		
-		for (int i = 0; i < H-1; i++) {
+//		System.out.println("before");
+//		print(screen);
+		for (int i = H-1; i >0; i--) {
 			for (int j = 0; j < W; j++) {
 				if(screen[i][j]!=0 && !visited[i][j]) {
 					visited[i][j]=true;
@@ -129,10 +133,15 @@ public class SWEA_5656_벽돌깨기 {
 						k++;
 					}
 					screen[k-1][j]=screen[i][j];
-					screen[i][j]=0;
+					if(k-1!=i)
+						screen[i][j]=0;
 				}
 			}
 		}
+//		System.out.println("after");
+//		print(screen);
+		
+		
 	}
 	
 	public static Block[] assignArray(int[][] screen, Block[] array) {
@@ -142,11 +151,11 @@ public class SWEA_5656_벽돌깨기 {
 			for (int j = 0; j < H; j++) {
 				if(screen[j][i]!=0) {
 					tArray[i]=new Block(j,i,screen[j][i]);
-					continue;
+					break;
 				}
 			}
 		}
-		
+		System.out.println(Arrays.toString(tArray));
 		return tArray;
 	}
 	
@@ -169,6 +178,15 @@ public class SWEA_5656_벽돌깨기 {
 			}
 		}
 		return zeros;
+	}
+	
+	public static void print(int[][] screen) {
+		for (int i = 0; i < screen.length; i++) {
+			for (int j = 0; j < screen[i].length; j++) {
+				System.out.print(screen[i][j]);
+			}
+			System.out.println();
+		}
 	}
 
 }

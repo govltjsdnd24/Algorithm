@@ -63,8 +63,7 @@ public class SWEA_1238_Contact {
 			for(int i=0;i<L/2;i++) {
 				nodeMap.put(froms[i],new Node(tos[i],nodeMap.get(froms[i])));
 			}
-			
-			System.out.println("bfs "+bfsContact(index));
+			System.out.println("#"+testcase+" "+bfsContact(index));
 			
 		}
 	}
@@ -72,30 +71,39 @@ public class SWEA_1238_Contact {
 	public static int bfsContact(int index) {
 		Queue<Node> queue=new LinkedList<Node>();
 		queue.offer(nodeMap.get(nodes[index]));
-//		visited[index]=true;
 		int max=Integer.MIN_VALUE;
+		boolean fin=false;
 		
-		int depth=0;
 		while(!queue.isEmpty()) {
-			System.out.println(queue.size());
+//			System.out.println(queue.size());
 			int size=queue.size();
+			
 			while(--size>=0) {
+				
 				Node current=queue.poll();
-				max=Integer.MIN_VALUE;
-				System.out.println("here");
+				fin=true;
+				
 				while(current!=null) {
-					System.out.println("cur: "+current.vertex);
+//					System.out.println("cur: "+current.vertex);
 					int currIndex=find(current.vertex);
 					if(!visited[currIndex]) {
-						System.out.println(current.vertex);
 						max=Math.max(max, current.vertex);
+//						System.out.println(visited[currIndex]);
+						if(queue.peek()!=null && !visited[currIndex])
+							fin=false;
 						visited[currIndex]=true;
-						queue.offer(current.next);
+						queue.offer(nodeMap.get(current.vertex));
+						
 					}
+//					System.out.println(current);
+//					System.out.println(current.next);
 					current=current.next;
 				}
+//				System.out.println("max "+max);
+				if(!fin)
+					max=Integer.MIN_VALUE;
 			}			
-			depth++;
+			
 		}
 		
 		return max;
