@@ -62,7 +62,7 @@ public class BAEKJOON_2531_회전초밥 {
 			
 			System.out.println(start+" "+end+" "+counter);
 			System.out.println(belt.get(start)+ " "+belt.get(end%N));
-			max=Math.max(belt.get(start-1)==c || sushis.contains(c)?counter+1:counter, max);
+			max=Math.max(belt.get(start-1)==c?counter+1:counter, max);
 			System.out.println("max:" + max);
 			if(counter==k && (belt.get(start-1)==c || belt.get(end%N)==c)) {
 				max=(counter++);
