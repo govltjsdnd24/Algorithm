@@ -28,7 +28,7 @@ public class SWEA_5656_벽돌깨기 {
 	static int []dr= {1,-1,0,0};
 	static int[] dc= {0,0,1,-1};
 	
-	static int output=Integer.MAX_VALUE;
+	static int output;
 	
 	public static void main(String[] args) throws IOException {
 		BufferedReader br= new BufferedReader(new InputStreamReader(System.in));
@@ -41,6 +41,7 @@ public class SWEA_5656_벽돌깨기 {
 			N=Integer.parseInt(st.nextToken());
 			W=Integer.parseInt(st.nextToken());
 			H=Integer.parseInt(st.nextToken());
+			output=Integer.MAX_VALUE;
 			
 			screen= new int[H][W];
 			Block[] array= new Block[W];
@@ -63,40 +64,50 @@ public class SWEA_5656_벽돌깨기 {
 	}
 	
 	public static void findCombination(int [][]screen, Block[] array,int oIndex,int cIndex) {
+		
 		if(cIndex==combination.length) {
-			System.out.println(Arrays.toString(combination));
-			output=Math.min(output, countZeros(screen));
+			System.out.println("Outcome: "+Arrays.toString(combination));
+			System.out.println();
+			System.out.println();
+			output=Math.min(output, countnonZeros(screen));
 			return;
 		}
 		
 		for(int i=oIndex;i<array.length;i++) {
 			combination[cIndex]=array[i];
 			int[][]tScreen=copyScreen(screen);
+			System.out.println("before explosion: on row "+i+ " ,"+(cIndex+1) + "th explosion.\n Removing "+ array[i]);
 			print(tScreen);
-			System.out.println(array[i]);
+			if(array[i]==null)
+				continue;
 			explodeBlocks(tScreen,array[i]);
+			System.out.println("after explosion: on row "+i+ " ,"+(cIndex+1) + "th explosion");
 			print(tScreen);
-			System.out.println();
 			Block[] tArray=assignArray(tScreen,array);
-			System.out.println(tScreen);
 			findCombination(tScreen,tArray,oIndex,cIndex+1);
 		}
+		
+		if(combination[combination.length-1]==null)
+			output=Math.min(output, countnonZeros(screen));
 	}
 	
 	public static void explodeBlocks(int[][]screen,Block block){
+		screen[block.r][block.c]=0;
+		if(block.size==1) {
+			return;
+		}
 		Queue<Block> queue=new LinkedList<Block>();
 		
 		visited=new boolean[H][W];
 		
 		queue.offer(block);
-		System.out.println(block.r+ "  " +block.c);
 		visited[block.r][block.c]=true;
 		
 		while(!queue.isEmpty()) {
 			Block current=queue.poll();
 			int r=current.r;
 			int c=current.c;
-			int size=current.size;
+			int size=current.size-1;
 			
 			for (int i = 0; i < dr.length; i++) {
 				int nr=r+dr[i];
@@ -122,7 +133,7 @@ public class SWEA_5656_벽돌깨기 {
 	
 	public static void dropBlocks(int [][]screen){
 		boolean[][]visited=new boolean[H][W];
-		for (int i = H-1; i >0; i--) {
+		for (int i = H-1; i >=0; i--) {
 			for (int j = 0; j < W; j++) {
 				if(screen[i][j]!=0 && !visited[i][j]) {
 					visited[i][j]=true;
@@ -150,7 +161,8 @@ public class SWEA_5656_벽돌깨기 {
 				}
 			}
 		}
-		System.out.println(Arrays.toString(tArray));
+//		System.out.println("next combination: "+Arrays.toString(tArray));
+//		System.out.println();
 		return tArray;
 	}
 	
@@ -158,21 +170,21 @@ public class SWEA_5656_벽돌깨기 {
 		int[][]tScreen=new int[H][W];
 		for (int i = 0; i < tScreen.length; i++) {
 			for (int j = 0; j < tScreen[i].length; j++) {
-				tScreen[i][j]=screen[i][j];
+				tScreen[i][j]=array[i][j];
 			}
 		}
 		return tScreen;
 	}
 	
-	public static int countZeros(int [][]screen) {
-		int zeros=0;
+	public static int countnonZeros(int [][]screen) {
+		int nonzeros=0;
 		for (int i = 0; i < screen.length; i++) {
 			for (int j = 0; j < screen[i].length; j++) {
-				if(screen[i][j]==0)
-					zeros++;
+				if(screen[i][j]!=0)
+					nonzeros++;
 			}
 		}
-		return zeros;
+		return nonzeros;
 	}
 	
 	public static void print(int[][] screen) {

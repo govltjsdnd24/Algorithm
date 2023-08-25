@@ -3,42 +3,43 @@ package h_august_21;
 import java.io.*;
 import java.util.*;
 
-class Cellc{
-	int r,c,level,counter,rcounter;
-	Cell(int r,int c){
-		this(r,c,0);
-	}
-	
-	Cell(int r,int c,int level){
-		this.r=r; this.c=c; this.level = level;
-		this.counter=level;
-		
-		this.rcounter=level;
-	}
-	void decreaseCounter() {
-		counter--;
-	} 
-	
-	@Override
-	public boolean equals(Object obj) {
-		Cell other = (Cell) obj;
-		if (c != other.c)
-			return false;
-		if (r != other.r)
-			return false;
-		return true;
-	}
 
-	@Override
-	public String toString() {
-		return "Cell [r=" + r + ", c=" + c + ", level=" + level + ", counter=" + counter + ", rcounter=" + rcounter
-				+ "]";
-	}
-	
-}
 
 
 public class SWEA_5653_줄기세포배양 {
+	static class Cell{
+		int r,c,level,counter,rcounter;
+		Cell(int r,int c){
+			this(r,c,0);
+		}
+		
+		Cell(int r,int c,int level){
+			this.r=r; this.c=c; this.level = level;
+			this.counter=level;
+			
+			this.rcounter=level;
+		}
+		void decreaseCounter() {
+			counter--;
+		} 
+		
+		@Override
+		public boolean equals(Object obj) {
+			Cell other = (Cell) obj;
+			if (c != other.c)
+				return false;
+			if (r != other.r)
+				return false;
+			return true;
+		}
+
+		@Override
+		public String toString() {
+			return "Cell [r=" + r + ", c=" + c + ", level=" + level + ", counter=" + counter + ", rcounter=" + rcounter
+					+ "]";
+		}
+		
+	}
 	
 	static ArrayList<Cell> active;
 	static ArrayList<Cell> dormant;
