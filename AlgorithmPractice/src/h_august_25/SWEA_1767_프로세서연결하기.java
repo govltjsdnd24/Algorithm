@@ -85,7 +85,6 @@ public class SWEA_1767_프로세서연결하기 {
 				if(grid[nr][nc]==1 || visited[nr][nc]) {
 					backtrack(r,c,nr,nc);
 					isConnectable=false;
-					backtrack(r,c,nr,nc);
 					currCount=0;
 					break;
 				}
