@@ -3,20 +3,32 @@ package edu.ssafy.dp;
 public class dp1_recursive {
 
 	static int[]memo;
+	static int[]arr={1,3,5};
 	
 	public static void main(String[] args) {
-		//1~10 ´õÇÏ±â
-		// 1. ÀÎÀÚ¸¦ ÀÌ¿ëÇÑ Àç±Í
-		add(1,0);
-		//2.returnÀ» ÀÌ¿ëÇÑ Àç±Í
-		System.out.println(add_return(10));
+		//1~10 ï¿½ï¿½ï¿½Ï±ï¿½
+		// 1. ï¿½ï¿½ï¿½Ú¸ï¿½ ï¿½Ì¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
+//		add(1,0);
+		//2.returnï¿½ï¿½ ï¿½Ì¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
+//		System.out.println(add_return(10));
 		//3.memoization
-		memo=new int[10+1];
-		System.out.println(add_memo(10));
-		//4. »óÇâ½Ä
-		memo=new int [10+1];
-		add_dp();
+//		memo=new int[10+1];
+//		System.out.println(add_memo(10));
+		//4. ï¿½ï¿½ï¿½ï¿½ï¿½
+//		memo=new int [10+1];
+//		add_dp();
+		//5. ë”í•˜ê¸° ê³±í•˜ê¸°
+		System.out.println(recursive_return(0));
 		
+	}
+	
+	private static void recursive(int idx,int value) {
+		if(idx==arr.length) {
+			System.out.println(value);
+			return;
+		}
+		recursive(idx+1,value+arr[idx]);
+		recursive(idx+1, value*arr[idx]);
 	}
 	
 	private static void add(int i, int sum) {
@@ -38,16 +50,16 @@ public class dp1_recursive {
 		if(i==0) {
 			return 0;
 		}
-		//Áö±İÀº ¾È¾²°ÚÁö¸¸
-		//³ªÁß¿¡ memo¿¡ ÀúÀåµÈ °ªÀ» ¾²´Â °æ¿ì°¡ »ı±ä´Ù¸é
-		//ÇÔ¼ö¸¦ È£ÃâÇÏÁö ¸»°í ¹è¿­¿¡ ÀúÀåµÈ °ªÀ» ÀçÈ°¿ëÇÑ´Ù.
+		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½È¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		//ï¿½ï¿½ï¿½ß¿ï¿½ memoï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ì°¡ ï¿½ï¿½ï¿½ï¿½Ù¸ï¿½
+		//ï¿½Ô¼ï¿½ï¿½ï¿½ È£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½è¿­ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È°ï¿½ï¿½ï¿½Ñ´ï¿½.
 		if(memo[i]!=0)
 			return memo[i];
 		return memo[i]=i+add_memo(i-1);
 	}
 	
 	private static void add_dp() {
-		//1~10 ´õÇÑ´Ù
+		//1~10 ï¿½ï¿½ï¿½Ñ´ï¿½
 		/*
 		 * loop n 1.... 10
 		 * f(n)= f(n-1)+n;
@@ -56,6 +68,13 @@ public class dp1_recursive {
 			memo[i]=memo[i-1]+i;
 		}
 		System.out.println(memo[10]);
+	}
+	
+	private static int recursive_return (int idx) {
+		if(idx==3) {
+			return 1;
+		}
+		return Math.max(recursive_return(idx+1)+arr[idx],recursive_return(idx+1)*arr[idx]);
 	}
 
 }

@@ -8,13 +8,13 @@ import java.util.StringTokenizer;
 public class BAEKJOON_14503_로봇청소기 {
 	
 	static int N,M;
-	static boolean room[][];
+	static int room[][];
 	
 	static int[] dr= {-1,0,1,0};
 	static int[] dc= {0,1,0,-1};
 	
 	static int count=0;
-	static int d;
+//	static int d;
 	
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -23,26 +23,26 @@ public class BAEKJOON_14503_로봇청소기 {
 		N= Integer.parseInt(st.nextToken());
 		M= Integer.parseInt(st.nextToken());
 		
-		room=new boolean[N][M];
+		room=new int[N][M];
 		st= new StringTokenizer(br.readLine());
 		int r= Integer.parseInt(st.nextToken());
 		int c= Integer.parseInt(st.nextToken());
-		d= Integer.parseInt(st.nextToken());
+		int d= Integer.parseInt(st.nextToken());
 		
 		int i,j;
 		for (i = 0; i < N; i++) {
 			st= new StringTokenizer(br.readLine());
 			for (j = 0; j < M; j++) {
 				if(Integer.parseInt(st.nextToken())==1)
-					room[i][j]=true;
+					room[i][j]=1;
 			}
 		}
 		
-		dfsClean(r,c);
+		dfsClean(r,c,d);
 		
 		for (i = 0; i < N; i++) {
 			for (j = 0; j < M; j++) {
-				System.out.print(room[i][j]==true?1:0);
+				System.out.print(room[i][j]);
 			}
 			System.out.println();
 		}
@@ -51,23 +51,23 @@ public class BAEKJOON_14503_로봇청소기 {
 	}
 	
 	
-	static void dfsClean(int r,int c) {
+	static void dfsClean(int r,int c,int d) {
 		
-		room[r][c]=true;
+		room[r][c]=2;
 		count++;
 		System.out.println(r+ " "+c+ " "+d);
 		
 		int nr,nc;
-		for (int i = d; i > d-4; i++) {
-			if((i+4)%4==-3)
+		for (int i = d-1; i > d-5; i++) {
+			if(i%4+4==-3)
 				System.out.println("here");
 			
 			nr=r+dr[(i+4)%4];
 			nc=c+dc[(i+4)%4];
 			
-			if(nr>=0 && nr<N && nc>=0 && nc<M && !room[nr][nc]) {
-				room[nr][nc]=true;
-				dfsClean(nr,nc);
+			if(nr>=0 && nr<N && nc>=0 && nc<M && room[nr][nc]==0) {
+				room[nr][nc]=2;
+				dfsClean(nr,nc,i%4+4);
 			}
 		}
 		
