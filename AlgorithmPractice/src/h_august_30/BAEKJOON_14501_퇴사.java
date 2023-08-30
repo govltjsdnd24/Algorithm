@@ -37,13 +37,15 @@ public class BAEKJOON_14501_퇴사 {
 		
 		int max=0;
 //		memo[0]=price[0];
-		memo=price.clone();
+		for (int i = 0; i < price.length; i++) {
+			memo[i]=price[i];
+		}
 		
 		for (int i = 0; i < n; i++) {
 			//System.out.println(i+works[i]);
 			if(i+works[i]<=n) {
 				if(i+works[i]==n)
-					memo[i+works[i]]=Math.max(memo[i], memo[i+works[i]]);
+					memo[i+works[i]]=memo[i];
 				memo[i+works[i]]=Math.max(price[i+works[i]]+memo[i], memo[i+works[i]]);
 				max=Math.max(max, memo[i]);
 			}
