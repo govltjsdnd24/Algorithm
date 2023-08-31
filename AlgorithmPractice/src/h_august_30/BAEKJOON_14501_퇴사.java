@@ -28,7 +28,7 @@ public class BAEKJOON_14501_퇴사 {
 		}
 		
 		System.out.println(memoization(N));
-		//System.out.println(Arrays.toString(memo));
+		System.out.println(Arrays.toString(memo));
 	}
 	
 	static int memoization(int n) {
@@ -36,7 +36,7 @@ public class BAEKJOON_14501_퇴사 {
 			return price[0];
 		
 		int max=0;
-//		memo[0]=price[0];
+		
 		for (int i = 0; i < price.length; i++) {
 			memo[i]=price[i];
 		}
@@ -44,14 +44,17 @@ public class BAEKJOON_14501_퇴사 {
 		for (int i = 0; i < n; i++) {
 			//System.out.println(i+works[i]);
 			if(i+works[i]<=n) {
-				if(i+works[i]==n)
-					memo[i+works[i]]=memo[i];
+				if(i+works[i]==n) {
+					memo[i+works[i]]=Math.max(memo[i+works[i]],memo[i]);
+					continue;
+				}
 				memo[i+works[i]]=Math.max(price[i+works[i]]+memo[i], memo[i+works[i]]);
 				max=Math.max(max, memo[i]);
+				System.out.println(max);
 			}
-			//if(i+works[i]<=n)
 				
 		}
+		max=Math.max(max, memo[n]);
 		
 		return max;
 	}
