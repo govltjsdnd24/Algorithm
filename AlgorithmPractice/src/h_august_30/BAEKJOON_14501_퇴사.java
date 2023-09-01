@@ -18,8 +18,8 @@ public class BAEKJOON_14501_퇴사 {
 		
 		int N=Integer.parseInt(st.nextToken());
 		memo= new int[N+1];
-		works=new int[N];
-		price=new int[N];
+		works=new int[N+1];
+		price=new int[N+1];
 		
 		for (int i = 0; i < N; i++) {
 			st= new StringTokenizer(br.readLine());
@@ -28,33 +28,27 @@ public class BAEKJOON_14501_퇴사 {
 		}
 		
 		System.out.println(memoization(N));
-		System.out.println(Arrays.toString(memo));
+		//System.out.println(Arrays.toString(memo));
 	}
 	
 	static int memoization(int n) {
 		if(n==1)
 			return price[0];
 		
-		int max=0;
 		
-		for (int i = 0; i < price.length; i++) {
-			memo[i]=price[i];
-		}
+		int max=-1;
 		
-		for (int i = 0; i < n; i++) {
-			//System.out.println(i+works[i]);
+		for (int i = 0; i <= n; i++) {
+			max=Math.max(max, memo[i]);
+
 			if(i+works[i]<=n) {
-				if(i+works[i]==n) {
-					memo[i+works[i]]=Math.max(memo[i+works[i]],memo[i]);
-					continue;
-				}
-				memo[i+works[i]]=Math.max(price[i+works[i]]+memo[i], memo[i+works[i]]);
-				max=Math.max(max, memo[i]);
-				System.out.println(max);
+	
+				memo[i+works[i]]=Math.max(price[i]+max, memo[i+works[i]]);
+
 			}
 				
 		}
-		max=Math.max(max, memo[n]);
+		max=memo[n];
 		
 		return max;
 	}
