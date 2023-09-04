@@ -14,7 +14,6 @@ public class BAEKJOON_14503_로봇청소기 {
 	static int[] dc= {0,1,0,-1};
 	
 	static int count=0;
-//	static int d;
 	
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -38,39 +37,55 @@ public class BAEKJOON_14503_로봇청소기 {
 			}
 		}
 		
-		dfsClean(r,c,d);
 		
-		for (i = 0; i < N; i++) {
-			for (j = 0; j < M; j++) {
-				System.out.print(room[i][j]);
-			}
-			System.out.println();
-		}
+		System.out.println(simulateClean(r,c,d));
 		
-		System.out.println(count);
+		
+		
+		
 	}
 	
-	
-	static void dfsClean(int r,int c,int d) {
+	static int simulateClean(int r,int c,int d) {
+		int tilesCleaned=0;
 		
-		room[r][c]=2;
-		count++;
-		System.out.println(r+ " "+c+ " "+d);
+		int sr=r;
+		int sc=c;
+		int nr,nc,dir;
 		
-		int nr,nc;
-		for (int i = d-1; i > d-5; i++) {
-			if(i%4+4==-3)
-				System.out.println("here");
-			
-			nr=r+dr[(i+4)%4];
-			nc=c+dc[(i+4)%4];
-			
-			if(nr>=0 && nr<N && nc>=0 && nc<M && room[nr][nc]==0) {
-				room[nr][nc]=2;
-				dfsClean(nr,nc,i%4+4);
+		Loop:
+		while(true) {
+				
+			//현재 타일 청소
+			if(room[sr][sc]!=-1) {
+				room[sr][sc]=-1;
+				tilesCleaned++;
 			}
+			
+			//빈 칸 확인
+			for (int i = d-1; i >=d-4 ; i--) {
+				dir=(i+4)%4;
+				nr=sr+dr[dir];
+				nc=sc+dc[dir];
+				
+				if(nr>=0 && nr<N && nc>=0 && nc<M && room[nr][nc]==0) {
+					sr=nr;
+					sc=nc;
+					d=dir;
+					continue Loop;
+				}
+			}
+			
+			//빈 칸 없을 시
+			sr=sr-dr[d];
+			sc=sc-dc[d];
+			if(room[sr][sc]!=1)
+				continue Loop;
+			else
+				break;
 		}
 		
+		
+		return tilesCleaned;
 	}
 
 }

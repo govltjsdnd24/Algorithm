@@ -17,9 +17,9 @@ public class BAEKJOON_14501_퇴사 {
 		StringTokenizer st= new StringTokenizer(br.readLine());
 		
 		int N=Integer.parseInt(st.nextToken());
-		memo= new int[N+1];
-		works=new int[N+1];
-		price=new int[N+1];
+		memo= new int[N+2];
+		works=new int[N+2];
+		price=new int[N+2];
 		
 		for (int i = 0; i < N; i++) {
 			st= new StringTokenizer(br.readLine());
@@ -32,23 +32,18 @@ public class BAEKJOON_14501_퇴사 {
 	}
 	
 	static int memoization(int n) {
-		if(n==1)
-			return price[0];
-		
-		
+
 		int max=-1;
-		
+		int current=0;
 		for (int i = 0; i <= n; i++) {
 			max=Math.max(max, memo[i]);
-
-			if(i+works[i]<=n) {
-	
-				memo[i+works[i]]=Math.max(price[i]+max, memo[i+works[i]]);
-
+			current=i+works[i];
+			
+			if(current<=n) {
+				memo[current]=Math.max(price[i]+max, memo[current]);
 			}
 				
 		}
-		max=memo[n];
 		
 		return max;
 	}
