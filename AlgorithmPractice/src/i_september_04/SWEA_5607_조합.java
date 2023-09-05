@@ -1,4 +1,4 @@
-package i_september_4;
+package i_september_04;
 
 import java.io.BufferedReader;
 import java.io.IOException;
