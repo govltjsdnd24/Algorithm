@@ -1,4 +1,4 @@
-package july_21;
+package july_21.hwjava04;
 
 public class Refrigerator extends Product{
 	private double size;
