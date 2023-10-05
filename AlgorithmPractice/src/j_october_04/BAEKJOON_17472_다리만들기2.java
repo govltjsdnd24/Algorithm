@@ -1,4 +1,4 @@
-package h_august_27;
+package j_october_04;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -78,18 +78,15 @@ public class BAEKJOON_17472_다리만들기2 {
 					islandFlag(i,j,index++);
 			}
 		}
-		print();
-		visited=new boolean[N][M];
+		//print();
 		for (int i = 0; i < N; i++) {
 			for (int j = 0; j < M; j++) {
-				if(map[i][j]!=0 && !visited[i][j])
+				if(map[i][j]!=0)
 					formBridges(i,j,map[i][j]);
 			}
 		}
 		
 		Collections.sort(edgeList);
-		System.out.println(edgeList.toString());
-		
 		make(index);
 		
 		int sum=0;
@@ -100,10 +97,9 @@ public class BAEKJOON_17472_다리만들기2 {
 			}
 		}
 		
-		int temp=parents[1];
+		int temp=find(1);
 		for (int i = 2; i < parents.length; i++) {
-			System.out.println(parents[1]+ " " +parents[i]);
-			if(temp!=parents[i]) {
+			if(temp!=find(i)) {
 				sum=0;
 				break;
 			}
@@ -152,7 +148,7 @@ public class BAEKJOON_17472_다리만들기2 {
 						counter++;
 					}
 					else {
-						if(counter==1)
+						if(counter<=1)
 							break;
 						edgeList.add(new Edge(index,map[nr][nc],counter));
 					}
