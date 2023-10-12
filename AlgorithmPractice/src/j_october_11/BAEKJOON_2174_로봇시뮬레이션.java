@@ -112,13 +112,11 @@ public class BAEKJOON_2174_로봇시뮬레이션 {
 				robot.setC(robot.getC()+dc[robot.getD()]);
 				break;
 			}
-			//System.out.println(robot.getD());
 			
 			//check for robot collision
 			int r=robot.getR();
 			int c=robot.getC();
 			for (int j = 0; j < robots.length; j++) {
-				//System.out.println(robots[j].getR() + " : " + robots[j].getC());
 				if(j!=current-1 && robots[j].getR()==r && robots[j].getC()==c) {
 					System.out.println("Robot "+robot.n+" crashes into robot "+robots[j].getN());
 					return false;
@@ -130,7 +128,6 @@ public class BAEKJOON_2174_로봇시뮬레이션 {
 				System.out.println("Robot "+robot.n+" crashes into the wall");
 				return false;
 			}
-			//System.out.println(robot.getN()+": "+r+","+c);
 			
 		}
 		
