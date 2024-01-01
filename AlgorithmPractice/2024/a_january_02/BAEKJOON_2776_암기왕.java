@@ -29,7 +29,7 @@ public class BAEKJOON_2776_암기왕 {
 				else
 					sb.append("0\n");
 			}
-			
+			sb.deleteCharAt(sb.length()-1);
 			System.out.println(sb);
 		}
 	}
