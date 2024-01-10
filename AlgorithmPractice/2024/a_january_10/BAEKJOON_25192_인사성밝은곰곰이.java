@@ -21,9 +21,6 @@ public class BAEKJOON_25192_인사성밝은곰곰이 {
 					map.put(sentence, false);
 					count++;
 				}
-//				else if(map.get(sentence)==false) {
-//					count++;
-//				}
 			}
 		}
 		
