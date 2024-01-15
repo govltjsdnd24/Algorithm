@@ -1,26 +1,29 @@
-package g_july_19;
+package a_january_15;
 
 import java.util.Scanner;
 
-public class BAEKJOON_8320 {
-	int visited[];
+public class BAEKJOON_8320_직사각형 {
 	
-	void checkCount() {
-		
+	static int checkCount(int num,int N) {
+		int half=num/2;
+		int count=0;
+		for(int i=1;i<=num;i++) {
+			if(num*i<=N)
+				count++;
+		}
+		return count;
 	}
 
 	public static void main(String[] args) {
 		Scanner sc=new Scanner(System.in);
 		int N=sc.nextInt();
-		int i,j;
 		int count=0;
-		BAEKJOON_8320 bj=new BAEKJOON_8320();
 		
-		for(i=1;i<=N;i++) {
-			for(j=1;j<=i;j++) {
-				count=checkCount()
-			}
+		for(int i=1;i<=N;i++) {
+			count+=checkCount(i,N);
 		}
+		
+		System.out.println(count);
 	}
 
 }
