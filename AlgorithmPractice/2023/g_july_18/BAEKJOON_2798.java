@@ -1,4 +1,4 @@
-package july_18;
+package g_july_18;
 
 import java.util.Scanner;
 import java.lang.Math;
