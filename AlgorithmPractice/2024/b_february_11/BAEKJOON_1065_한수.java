@@ -1,6 +1,8 @@
+package b_february_11;
+
 import java.util.Scanner;
  
-public class Main {
+public class BAEKJOON_1065_한수 {
  
 	public static void main(String[] args) {
 		Scanner in = new Scanner(System.in);

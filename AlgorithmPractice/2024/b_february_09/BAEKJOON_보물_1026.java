@@ -1,3 +1,5 @@
+package b_february_09;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.InputStreamReader;
@@ -6,7 +8,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.StringTokenizer;
  
-public class Main {
+public class BAEKJOON_보물_1026 {
  
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
