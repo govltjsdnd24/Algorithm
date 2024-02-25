@@ -1,4 +1,4 @@
-package b_february_17;
+package b_february_24;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -9,7 +9,7 @@ public class BAEKJOON_1065_한수 {
 	public static void main(String[] args) throws NumberFormatException, IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		
-		System.out.print(arithmetic_sequence(Integer.parseInt(br.readLine()));
+		System.out.print(arithmetic_sequence(Integer.parseInt(br.readLine())));
 	}
  
 	public static int arithmetic_sequence(int num) {
