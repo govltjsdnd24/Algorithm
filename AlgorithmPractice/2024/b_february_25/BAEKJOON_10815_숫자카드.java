@@ -13,7 +13,6 @@ public class BAEKJOON_10815_숫자카드 {
 	public static void main(String[] args) throws NumberFormatException, IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		
-		
 		int M= Integer.parseInt(br.readLine());
 		//int[] in_arr=new int[M];
 		Map<Integer,Integer> in_map= new HashMap<Integer,Integer>();
