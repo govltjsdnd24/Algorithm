@@ -1,4 +1,4 @@
-project b_february_29;
+package b_february_29;
 
 import java.io.BufferedReader;
 import java.io.IOException;
