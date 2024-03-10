@@ -71,7 +71,6 @@ public class BAEKJOON_2667_단지번호붙이기 {
 			nc=c+dc[n];
 			if(nr>=0&&nr<N&&nc>=0&&nc<N&&matrix[nr][nc]==1&&!visited[nr][nc]) {
 				count++;
-				
 				dfs(nr,nc);
 			}
 		}
