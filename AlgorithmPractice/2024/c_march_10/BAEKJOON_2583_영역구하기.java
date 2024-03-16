@@ -77,6 +77,14 @@ public class BAEKJOON_2583_영역구하기 {
 		}
 		
 		Collections.sort(counts);
+		Collections.sort(counts, new Comparator<Integer>() {
+
+			@Override
+			public int compare(Integer o1, Integer o2) {
+				return -1*o1.compareTo(o2);
+			}
+			
+		});
 		
 		System.out.println(counts.size());
 		for(int n=0;n<counts.size();n++) {
