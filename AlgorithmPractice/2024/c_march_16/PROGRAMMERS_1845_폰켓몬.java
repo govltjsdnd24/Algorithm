@@ -20,7 +20,6 @@ public class PROGRAMMERS_1845_폰켓몬 {
 		
 		Solution sol = new Solution();
 		System.out.println(sol.solution(nums));
-//		[3, 1, 2, 3]
 
 	}
 	
