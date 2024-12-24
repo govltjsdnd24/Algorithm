@@ -42,28 +42,27 @@ public class SWEA_6109 {
 				for(sc=0;sc<N;sc++) {
 					prod=1;
 					while(grid[sr][sc]!=0) {
-						r=sr+dr[StI]*prod;
-						c=sc+dc[StI]*prod;
+						//r=sr+dr[StI]*prod;
+						//c=sc+dc[StI]*prod;
 						//check if cursor is out of bounds
-						if(r<0 || r>=N || c<0 || c>=N )
+						//if(r<0 || r>=N || c<0 || c>=N )
 							break;
 						//if it's empty space
-						else if(grid[r][c]==0) {
-							prod++;
-							continue;
+						//else if(grid[r][c]==0) {
+						//	prod++;
+						//	continue;
 						}
 						
-						if(grid[sr][sc]==grid[r][c]) {
-							grid
+						//if(grid[sr][sc]==grid[r][c]) {
 						}
 					}
 				}
 			}
 			
 			
-			System.out.println("#"+test_case+" "+output);
-		}
+			//System.out.println("#"+test_case+" "+output);
+//		}
 
-	}
+	//}
 
 }

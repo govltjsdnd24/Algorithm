@@ -26,7 +26,7 @@ public class SWEA_1210 {
 			
 			
 			
-			System.out.println("#"+test_case+" "+output);
+			//System.out.println("#"+test_case+" "+output);
 		}
 
 	}

@@ -24,15 +24,15 @@ public class SWEA_1289 {
 				fBits[i]=line.charAt(i);
 			}
 			
-			bitRecursion(0);		
+			//bitRecursion(0);
 			
-			System.out.println("#"+test_case+" "+output);
+		//	System.out.println("#"+test_case+" "+output);
 		}
 
 	}
 	
-	public static bitRecursion(int index) {
-		
-	}
+//	public static bitRecursion(int index) {
+//
+//	}
 
 }
